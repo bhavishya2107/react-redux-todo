@@ -25,15 +25,18 @@ export default function todoReducer(state = initialState, action) {
           if (todo.id === action.id) {
             return { ...todo, done: !todo.done };
           }
-          return todo
+          return todo;
         }),
       };
-    
+
     case "tabs":
-      return{
+      return {
         ...state,
-        activeTab: action.tabs
-      }
+        activeTab: action.tabs,
+      };
+      
+    case "clearAll":
+      return initialState
 
     default:
       return state;

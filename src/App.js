@@ -37,6 +37,10 @@ class App extends React.Component {
     this.props.dispatch({ type: "tabs", tabs });
   };
 
+  clearAll = () => {
+    this.props.dispatch({ type: "clearAll" });
+  };
+
   render() {
     console.log(this.props.allTodos);
     return (
@@ -51,33 +55,35 @@ class App extends React.Component {
             onKeyDown={(e) => (e.keyCode === 13 ? this.addTodo() : "")}
           />
           <ul>
-            {this.props.allTodos !== "" ? this.props.allTodos.map((todo) => {
-              return (
-                <li key={todo.id} className="flex center">
-                  <input
-                    placeholder="What needs to be done?"
-                    type="checkbox"
-                    onChange={() => this.toggleTodo(todo.id)}
-                    checked={todo.done}
-                  />
-                  <p
-                    style={
-                      todo.done
-                        ? { textDecoration: "line-through" }
-                        : { textDecoration: "none" }
-                    }
-                  >
-                    {todo.text}
-                  </p>
-                  <span
-                    className="hover_delete"
-                    onClick={() => this.deleteTodo(todo.id)}
-                  >
-                    X
-                  </span>
-                </li>
-              );
-            }):"No todos"}
+            {this.props.allTodos !== ""
+              ? this.props.allTodos.map((todo) => {
+                  return (
+                    <li key={todo.id} className="flex center">
+                      <input
+                        placeholder="What needs to be done?"
+                        type="checkbox"
+                        onChange={() => this.toggleTodo(todo.id)}
+                        checked={todo.done}
+                      />
+                      <p
+                        style={
+                          todo.done
+                            ? { textDecoration: "line-through" }
+                            : { textDecoration: "none" }
+                        }
+                      >
+                        {todo.text}
+                      </p>
+                      <span
+                        className="hover_delete"
+                        onClick={() => this.deleteTodo(todo.id)}
+                      >
+                        X
+                      </span>
+                    </li>
+                  );
+                })
+              : "No todos"}
           </ul>
           <footer>
             <button onClick={() => this.handleTabs("all")}>All</button>
@@ -85,7 +91,7 @@ class App extends React.Component {
             <button onClick={() => this.handleTabs("completed")}>
               Completed
             </button>
-           
+            <button onClick={() => this.clearAll()}>Clear All</button>
           </footer>
         </div>
       </>
@@ -107,7 +113,7 @@ function mapStateToProps({ allTodos, activeTab }) {
     }
   }
   return {
-    allTodos: filterTodos(allTodos, activeTab)
+    allTodos: filterTodos(allTodos, activeTab),
   };
 }
 
