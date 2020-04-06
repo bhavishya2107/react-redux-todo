@@ -1,26 +1,115 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { connect } from "react-redux";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      todoInput: "",
+    };
+  }
+
+  handleAddTodo = ({ target }) => {
+    this.setState({
+      todoInput: target.value,
+    });
+  };
+
+  //add todo to state array
+  addTodo = () => {
+    this.props.dispatch({ type: "add", todoInput: this.state.todoInput });
+    this.setState({ todoInput: "" });
+  };
+
+  //remove todo
+  deleteTodo = (id) => {
+    this.props.dispatch({ type: "del", id });
+  };
+
+  //toggle todo
+  toggleTodo = (id) => {
+    this.props.dispatch({ type: "toggle", id });
+  };
+
+  //footer button functionality
+  handleTabs = (tabs) => {
+    this.props.dispatch({ type: "tabs", tabs });
+  };
+
+  render() {
+    console.log(this.props.allTodos);
+    return (
+      <>
+        <div className="center">
+          <h1>Todo</h1>
+          <input
+            type="text"
+            className="input_style"
+            value={this.state.todoInput}
+            onChange={this.handleAddTodo}
+            onKeyDown={(e) => (e.keyCode === 13 ? this.addTodo() : "")}
+          />
+          <ul>
+            {this.props.allTodos.map((todo) => {
+              return (
+                <li key={todo.id} className="flex center">
+                  <input
+                    placeholder="What needs to be done?"
+                    type="checkbox"
+                    onChange={() => this.toggleTodo(todo.id)}
+                    checked={todo.done}
+                  />
+                  <p
+                    style={
+                      todo.done
+                        ? { textDecoration: "line-through" }
+                        : { textDecoration: "none" }
+                    }
+                  >
+                    {todo.text}
+                  </p>
+                  <span
+                    className="hover_delete"
+                    onClick={() => this.deleteTodo(todo.id)}
+                  >
+                    X
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+
+          <button onClick={() => this.handleTabs("all")}>All</button>
+          <button onClick={() => this.handleTabs("active")}>Active</button>
+          <button onClick={() => this.handleTabs("completed")}>
+            Completed
+          </button>
+          <button onClick={() => this.handleTabs("clearAll")}>Clear All</button>
+        </div>
+      </>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(store) {
+  function filterTodos(todos, tab) {
+    switch (tab) {
+      case "all":
+        return todos;
+      case "completed":
+        return todos.filter((todo) => todo.done);
+      case "active":
+        return todos.filter((todo) => !todo.done);
+      case "clearAll":
+        return this.setState({
+          todos: "",
+        });
+      default:
+        break;
+    }
+  }
+  return store;
+}
+
+export default connect(mapStateToProps)(App);
