@@ -51,7 +51,7 @@ class App extends React.Component {
             onKeyDown={(e) => (e.keyCode === 13 ? this.addTodo() : "")}
           />
           <ul>
-            {this.props.allTodos.map((todo) => {
+            {this.props.allTodos !== "" ? this.props.allTodos.map((todo) => {
               return (
                 <li key={todo.id} className="flex center">
                   <input
@@ -77,22 +77,23 @@ class App extends React.Component {
                   </span>
                 </li>
               );
-            })}
+            }):"No todos"}
           </ul>
-
-          <button onClick={() => this.handleTabs("all")}>All</button>
-          <button onClick={() => this.handleTabs("active")}>Active</button>
-          <button onClick={() => this.handleTabs("completed")}>
-            Completed
-          </button>
-          <button onClick={() => this.handleTabs("clearAll")}>Clear All</button>
+          <footer>
+            <button onClick={() => this.handleTabs("all")}>All</button>
+            <button onClick={() => this.handleTabs("active")}>Active</button>
+            <button onClick={() => this.handleTabs("completed")}>
+              Completed
+            </button>
+           
+          </footer>
         </div>
       </>
     );
   }
 }
 
-function mapStateToProps(store) {
+function mapStateToProps({ allTodos, activeTab }) {
   function filterTodos(todos, tab) {
     switch (tab) {
       case "all":
@@ -101,15 +102,13 @@ function mapStateToProps(store) {
         return todos.filter((todo) => todo.done);
       case "active":
         return todos.filter((todo) => !todo.done);
-      case "clearAll":
-        return this.setState({
-          todos: "",
-        });
       default:
         break;
     }
   }
-  return store;
+  return {
+    allTodos: filterTodos(allTodos, activeTab)
+  };
 }
 
 export default connect(mapStateToProps)(App);
