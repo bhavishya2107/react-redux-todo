@@ -1,6 +1,13 @@
 import { v4 as uuid } from "uuid";
+import {
+  ADD_TODO,
+  TOGGLE_TODO,
+  CHANGE_TAB,
+  DELETE_TODO,
+  CLEAR_ALL,
+} from "../types";
 
-let initialState = {
+let initialState = JSON.parse(localStorage.getItem("myTodos")) || {
   allTodos: [],
   activeTab: "all",
 };
@@ -8,35 +15,35 @@ let initialState = {
 export default function todoReducer(state = initialState, action) {
   console.log(state);
   switch (action.type) {
-    case "add":
-      let newTodo = { text: action.todoInput, done: false, id: uuid() };
+    case ADD_TODO:
+      let newTodo = { text: action.payload, done: false, id: uuid() };
       return { ...state, allTodos: [...state.allTodos, newTodo] };
 
-    case "del":
+    case DELETE_TODO:
       return {
         ...state,
-        allTodos: state.allTodos.filter((todo) => todo.id !== action.id),
+        allTodos: state.allTodos.filter((todo) => todo.id !== action.payload),
       };
 
-    case "toggle":
+    case TOGGLE_TODO:
       return {
         ...state,
         allTodos: state.allTodos.map((todo) => {
-          if (todo.id === action.id) {
+          if (todo.id === action.payload) {
             return { ...todo, done: !todo.done };
           }
           return todo;
         }),
       };
 
-    case "tabs":
+    case CHANGE_TAB:
       return {
         ...state,
-        activeTab: action.tabs,
+        activeTab: action.payload,
       };
-      
-    case "clearAll":
-      return initialState
+
+    case CLEAR_ALL:
+      return initialState;
 
     default:
       return state;

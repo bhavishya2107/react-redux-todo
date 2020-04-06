@@ -1,6 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./App.css";
+import {
+  addTodoAction,
+  deleteTodoAction,
+  toggleTodoAction,
+  changeTabAction,
+  clearAllTodos,
+} from "./store/action";
 
 class App extends React.Component {
   constructor() {
@@ -18,27 +25,27 @@ class App extends React.Component {
 
   //add todo to state array
   addTodo = () => {
-    this.props.dispatch({ type: "add", todoInput: this.state.todoInput });
+    this.props.dispatch(addTodoAction(this.state.todoInput));
     this.setState({ todoInput: "" });
   };
 
   //remove todo
   deleteTodo = (id) => {
-    this.props.dispatch({ type: "del", id });
+    this.props.dispatch(deleteTodoAction(id));
   };
 
   //toggle todo
   toggleTodo = (id) => {
-    this.props.dispatch({ type: "toggle", id });
+    this.props.dispatch(toggleTodoAction(id));
   };
 
   //footer button functionality
   handleTabs = (tabs) => {
-    this.props.dispatch({ type: "tabs", tabs });
+    this.props.dispatch(changeTabAction(tabs));
   };
 
   clearAll = () => {
-    this.props.dispatch({ type: "clearAll" });
+    this.props.dispatch(clearAllTodos());
   };
 
   render() {

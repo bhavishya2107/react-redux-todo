@@ -1,5 +1,5 @@
-let ADD_TODO = "add"
-let DELETE_TODO = "del"
-let TOGGLE_TODO = "toggle"
-let TABS = "tabs"
-
+export const ADD_TODO = "add";
+export const DELETE_TODO = "del";
+export const TOGGLE_TODO = "toggle";
+export const CHANGE_TAB = "tabs";
+export const CLEAR_ALL = "clearAll"
