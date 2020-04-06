@@ -12,6 +12,6 @@ export let toggleTodoAction = (payload) => {
 export let changeTabAction = (payload) => {
   return { type: CHANGE_TAB, payload };
 };
-export let clearAllTodos = (payload) => { 
-  return { type: CLEAR_ALL, payload };
+export let clearAllTodos = () => { 
+  return { type: CLEAR_ALL};
 };

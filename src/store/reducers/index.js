@@ -9,11 +9,11 @@ import {
 
 let initialState = JSON.parse(localStorage.getItem("myTodos")) || {
   allTodos: [],
-  activeTab: "all",
+  activeTab: "all"
 };
 
 export default function todoReducer(state = initialState, action) {
-  console.log(state);
+  
   switch (action.type) {
     case ADD_TODO:
       let newTodo = { text: action.payload, done: false, id: uuid() };
@@ -43,7 +43,8 @@ export default function todoReducer(state = initialState, action) {
       };
 
     case CLEAR_ALL:
-      return initialState;
+       localStorage.removeItem("myTodos")
+       return state = {...initialState}
 
     default:
       return state;

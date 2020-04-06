@@ -25,8 +25,10 @@ class App extends React.Component {
 
   //add todo to state array
   addTodo = () => {
-    this.props.dispatch(addTodoAction(this.state.todoInput));
-    this.setState({ todoInput: "" });
+    if(this.state.todoInput) {
+      this.props.dispatch(addTodoAction(this.state.todoInput));
+      this.setState({ todoInput: "" });
+    }
   };
 
   //remove todo
@@ -44,53 +46,57 @@ class App extends React.Component {
     this.props.dispatch(changeTabAction(tabs));
   };
 
+
   clearAll = () => {
     this.props.dispatch(clearAllTodos());
   };
 
   render() {
-    console.log(this.props.allTodos);
     return (
       <>
         <div className="center">
-          <h1>Todo</h1>
+          <h1>Todos</h1>
           <input
             type="text"
+            placeholder="What is need to be done?"
             className="input_style"
             value={this.state.todoInput}
             onChange={this.handleAddTodo}
             onKeyDown={(e) => (e.keyCode === 13 ? this.addTodo() : "")}
           />
           <ul>
-            {this.props.allTodos !== ""
+            {this.props.allTodos.length > 0
               ? this.props.allTodos.map((todo) => {
                   return (
-                    <li key={todo.id} className="flex center">
-                      <input
-                        placeholder="What needs to be done?"
-                        type="checkbox"
-                        onChange={() => this.toggleTodo(todo.id)}
-                        checked={todo.done}
-                      />
-                      <p
-                        style={
-                          todo.done
-                            ? { textDecoration: "line-through" }
-                            : { textDecoration: "none" }
-                        }
-                      >
-                        {todo.text}
-                      </p>
-                      <span
-                        className="hover_delete"
-                        onClick={() => this.deleteTodo(todo.id)}
-                      >
-                        X
-                      </span>
-                    </li>
+                    <>
+                      <li key={todo.id} className="flex center">
+                        <input
+                          placeholder="What needs to be done?"
+                          type="checkbox"
+                          onChange={() => this.toggleTodo(todo.id)}
+                          checked={todo.done}
+                        />
+                        <p
+                          style={
+                            todo.done
+                              ? { textDecoration: "line-through" }
+                              : { textDecoration: "none" }
+                          }
+                        >
+                          {todo.text}
+                        </p>
+                        <span
+                          className="hover_delete"
+                          onClick={() => this.deleteTodo(todo.id)}
+                        >
+                          X
+                        </span>
+                      </li>
+                      <hr />
+                    </>
                   );
                 })
-              : "No todos"}
+              : "No Todos"}
           </ul>
           <footer>
             <button onClick={() => this.handleTabs("all")}>All</button>
@@ -98,7 +104,9 @@ class App extends React.Component {
             <button onClick={() => this.handleTabs("completed")}>
               Completed
             </button>
-            <button onClick={() => this.clearAll()}>Clear All</button>
+            <button className="red" onClick={this.clearAll}>
+              Clear All
+            </button>
           </footer>
         </div>
       </>

@@ -14,10 +14,31 @@
 
 .input_style {
   border: #282c34 2px solid;
-  height: 30px;
-  width: 450px;
+  height: 35px;
+  width: 550px;
+  outline: none;
 }
 
 .hover_delete {
   cursor: pointer;
+}
+
+.red {
+  background-color: red;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 10px;
+  font-size: 16px;
+  color: white;
+  padding: 5px;
+  outline: none;
+}
+
+input[type=text]{
+  padding:0px 5px;
+}
+
+hr {
+  width: 500px;
 }
