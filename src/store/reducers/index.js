@@ -44,6 +44,7 @@ export default function todoReducer(state = initialState, action) {
 
     case CLEAR_ALL:
        localStorage.removeItem("myTodos")
+       localStorage.clear()
        return state = {...initialState}
 
     default:
